@@ -1,0 +1,12 @@
+{% extends 'payments/partials/bankslip.html' %}
+{% block 'action' %} action="{% url 'credit-card' %}" {% endblock 'action' %}
+{% block 'formpayments' %}<span class="badge bg-danger">Credit Card</span>{% endblock 'formpayments' %}
+{% block inputtoken %}
+<input type="hidden" name="token" id="token" value="">
+{% endblock inputtoken %}
+{% block 'outherinfo' %}
+ <p>Dividing into : 4x R$ 250,00</p>
+<p>number: '4012001038443335'</p>
+<p>cvv: '123'</p>
+<p>expiration: 05/21</p>
+{% endblock 'outherinfo' %}
