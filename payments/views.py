@@ -1,38 +1,41 @@
-import base64
 # Create your views here.
-import os
-
-import requests
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from gerencianet import Gerencianet
 
-credentials = {
-    "client_id": os.environ.get('CLIENT_ID'),
-    "client_secret": os.environ.get('CLIENT_SECRET'),
-}
+from credentials.credentials import CREDENTIALS
 
-certificado = 'credentials/certificate/homologacao-429610-certficate.pem'
+gn = Gerencianet(CREDENTIALS)
 
 
 def home(request):
-    auth = base64.b64encode(
-        (f"{credentials['client_id']}:{credentials['client_secret']}"
-         ).encode()).decode()
-
-    # Para ambiente de Desenvolvimento
-    url = "https://api-pix-h.gerencianet.com.br/oauth/token"
-
-    payload = "{\r\n    \"grant_type\": \"client_credentials\"\r\n}"
-    headers = {
-        'Authorization': f"Basic {auth}",
-        'Content-Type': 'application/json'
-    }
-
-    response = requests.request("POST",
-                                url,
-                                headers=headers,
-                                data=payload,
-                                cert=certificado)
-
-    print(response.text)
     return render(request, 'payments/pages/home.html')
+
+
+def bank_billet(request):
+    if request.method == 'POST':
+        data = {
+            'items': [
+                {
+                    'name': 'Course Programming',
+                    'value': 100000,
+                    'amount': 1,
+                }
+            ],
+        }
+        body = {
+            'payment': {
+                'banking_billet': {
+                    'expire_at': '2023-01-01',
+                    'customer': {
+                        'name': 'Gorbadoc Oldbuck',
+                        'cpf': '04267484171',
+                        'phone_number': '5144916523',
+                        'email': 'exemple@gmail.com',
+                    },
+                }
+            },
+            'items': data['items'],
+        }
+        response = gn.create_charge_onestep(params=None, body=body)
+        link = response['data']['link']
+        return redirect(link)
