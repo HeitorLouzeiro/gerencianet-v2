@@ -1,0 +1,4 @@
+{% extends 'payments/partials/bankslip.html' %}
+{% block 'action' %} action="{% url 'carnet' %}" {% endblock 'action' %}
+{% block 'formpayments' %}<span class="badge bg-info">Carnet</span>{% endblock 'formpayments' %}
+{% block 'outherinfo' %} <p>Dividing into : 4x R$ 250,00</p> {% endblock 'outherinfo' %}

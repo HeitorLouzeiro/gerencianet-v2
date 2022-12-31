@@ -39,3 +39,31 @@ def bank_billet(request):
         response = gn.create_charge_onestep(params=None, body=body)
         link = response['data']['link']
         return redirect(link)
+
+
+def carnet(request):
+    if request.method == 'POST':
+        data = {
+            'items': [
+                {
+                    'name': 'Course Programming',
+                    'value': 25000,
+                    'amount': 1,
+                }
+            ],
+        }
+        body = {
+            'customer': {
+                'name': 'Gorbadoc Oldbuck',
+                        'cpf': '04267484171',
+                        'phone_number': '5144916523',
+                        'birth': '1977-01-15',
+                        'email': 'exemple@gmail.com',
+            },
+            'repeats': 4,
+            'expire_at': '2023-01-01',
+            'items': data['items'],
+        }
+        response = gn.create_carnet(params=None, body=body)
+        carnet_link = response['data']['carnet_link']
+        return redirect(carnet_link)

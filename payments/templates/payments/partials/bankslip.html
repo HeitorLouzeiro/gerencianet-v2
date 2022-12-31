@@ -1,5 +1,5 @@
 <section>
-    <form action="{% url 'bank-billet' %}" method="POST">
+    <form {% block 'action' %} action="{% url 'bank-billet' %}" {% endblock 'action' %} method="POST">
       {% csrf_token %}
       <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
@@ -12,7 +12,8 @@
               <p class="card-text">
                 <small class="text-muted">R$ 1.000,00</small>
               </p>
-              <p>Form of payment: <span class="badge bg-primary">Bank slip</span></p>
+              <p>Form of payment: {% block 'formpayments' %}<span class="badge bg-primary">Bank slip</span>{% endblock 'formpayments' %}</p>
+              {% block 'outherinfo' %} {% endblock 'outherinfo' %}
               <button type="submit" id="checkout-button" class="btn btn-outline-success">Checkout</button>
             </div>
           </div>
